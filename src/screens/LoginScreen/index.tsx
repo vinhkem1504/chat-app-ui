@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
 import {Input} from '../../components/Input';
 import {Button, Text, TextInput} from 'react-native-paper';
+import axios from 'axios';
 
 export const LoginScreen = () => {
   const [username, setUsername] = useState<string>('');
@@ -16,8 +17,18 @@ export const LoginScreen = () => {
     setPassword(text);
   };
 
-  const onSubmit = () => {
-    console.log('data', {username, password});
+  const onSubmit = async () => {
+    const data = {
+      username: username,
+      password: password,
+    };
+    console.log('data', data);
+    try {
+      const res = await axios.post('http://10.0.2.2:5000/api/auth/login', data);
+      console.log('res', res.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onEyeChange = (isShow: boolean) => {
