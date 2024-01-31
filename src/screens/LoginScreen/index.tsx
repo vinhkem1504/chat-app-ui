@@ -2,13 +2,14 @@ import React, {useState} from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
 import {Input} from '../../components/Input';
 import {Button, Text, TextInput} from 'react-native-paper';
-import axios from 'axios';
+import {axiosInstanceOptions, createAxiosInstance} from '../../axios-instance';
+import {URL} from '../../chatConfig';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const LoginScreen = () => {
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+export const LoginScreen = (props: any) => {
+  const [username, setUsername] = useState<string>('NguyenVinhTest');
+  const [password, setPassword] = useState<string>('123456');
   const [isShownPassword, setShowPassword] = useState<boolean>(false);
-
   const onChangeUsername = (text: string) => {
     setUsername(text);
   };
@@ -22,10 +23,21 @@ export const LoginScreen = () => {
       username: username,
       password: password,
     };
-    console.log('data', data);
+
+    const options: axiosInstanceOptions = {
+      baseURL: `${URL}/api/auth/login`,
+    };
+
     try {
-      const res = await axios.post('http://10.0.2.2:5000/api/auth/login', data);
-      console.log('res', res.data);
+      const instance = createAxiosInstance(options);
+      const res = await instance.post('/', data);
+
+      await AsyncStorage.setItem('accessToken', res.data.accessToken!);
+      await AsyncStorage.setItem('refreshToken', res.data.refreshToken!);
+      await AsyncStorage.setItem('user_id', res.data.data._id!);
+      await AsyncStorage.setItem('name', res.data.data.firstName!);
+
+      props.navigation.navigate('channel');
     } catch (error) {
       console.log(error);
     }
