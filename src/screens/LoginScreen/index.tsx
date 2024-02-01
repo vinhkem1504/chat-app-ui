@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
 import {Input} from '../../components/Input';
 import {Button, Text, TextInput} from 'react-native-paper';
-import axios from 'axios';
+import {userLogin} from '../../APIs/auth.api';
 
 export const LoginScreen = () => {
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [username, setUsername] = useState<string>('Vinh');
+  const [password, setPassword] = useState<string>('123456');
   const [isShownPassword, setShowPassword] = useState<boolean>(false);
 
   const onChangeUsername = (text: string) => {
@@ -21,11 +21,16 @@ export const LoginScreen = () => {
     const data = {
       username: username,
       password: password,
+      firstName: 'Test',
+      lastName: 'Nguyen',
+      email: 'test@gmail.com',
+      gender: 0,
+      birthDay: new Date(),
     };
     console.log('data', data);
     try {
-      const res = await axios.post('http://10.0.2.2:5000/api/auth/login', data);
-      console.log('res', res.data);
+      userLogin(data);
+      // userRegister(data);
     } catch (error) {
       console.log(error);
     }
