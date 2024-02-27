@@ -43,8 +43,10 @@ export const userLogin = async (userAccount: IAccount) => {
     const options: axiosInstanceOptions = {
       baseURL: `${API_URL}/auth/login`,
     };
+
     const instance = createAxiosInstance(options);
     const res = await instance.post('/', userAccount);
+
     return res.data;
   } catch (error) {
     console.log(error);

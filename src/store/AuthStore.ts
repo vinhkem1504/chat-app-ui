@@ -12,6 +12,11 @@ export class AuthStore {
   refreshToken?: string;
   loading?: boolean = true;
 
+  setToken = async (accessToken: string, refreshToken: string) => {
+    await AsyncStorage.setItem('accessToken', accessToken);
+    await AsyncStorage.setItem('refreshToken', refreshToken);
+  };
+
   register = async (newUser: IAccount & IUser) => {
     try {
       const newUserInfo = await userRegister(newUser);
@@ -24,7 +29,10 @@ export class AuthStore {
   login = async (account: IAccount) => {
     try {
       const userInfomation = await userLogin(account);
-      this.setToken(userInfomation.accessToken!, userInfomation.refreshToken!);
+      await this.setToken(
+        userInfomation.accessToken!,
+        userInfomation.refreshToken!,
+      );
     } catch (error) {
       console.log(error);
     }
@@ -39,11 +47,6 @@ export class AuthStore {
     } catch (error) {
       console.log(error);
     }
-  };
-
-  setToken = async (accessToken: string, refreshToken: string) => {
-    await AsyncStorage.setItem('accessToken', accessToken);
-    await AsyncStorage.setItem('refreshToken', refreshToken);
   };
 
   get getAccessToken(): string {
