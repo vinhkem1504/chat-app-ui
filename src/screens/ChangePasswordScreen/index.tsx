@@ -5,7 +5,7 @@ import {Button, Text} from 'react-native-paper';
 import {Input} from '../../components/Input';
 import {useForm} from 'react-hook-form';
 
-export const ForgotPasswordScreen = () => {
+export const ChangePasswordScreen = () => {
   const {handleSubmit, control} = useForm();
   const onSubmit = (data: any) => {
     console.log({data});
@@ -14,19 +14,19 @@ export const ForgotPasswordScreen = () => {
     <Layout>
       <View style={styles.wrapper}>
         <View style={styles.logo}>
-          <Text style={styles.title}>Forgot password!</Text>
+          <Text style={styles.title}>Change password!</Text>
         </View>
         <View style={styles.form}>
-          <Input control={control} name="email" label="Email" />
+          <Input control={control} name="newPassword" label="New password" />
+          <Input
+            control={control}
+            name="confirmNewPassWord"
+            label="Confirm password"
+          />
+          <Input control={control} name="verifyCode" label="Verify code" />
           <View style={styles.buttonWrap}>
             <Button mode="contained" onPress={handleSubmit(onSubmit)}>
-              <Text style={styles.button}>Get code</Text>
-            </Button>
-            <Button
-              mode="contained"
-              onPress={handleSubmit(onSubmit)}
-              buttonColor="#3cb05b">
-              <Text style={styles.button}>Continue</Text>
+              <Text style={styles.button}>Change password</Text>
             </Button>
           </View>
         </View>
@@ -60,8 +60,5 @@ const styles = StyleSheet.create({
   },
   buttonWrap: {
     paddingTop: 24,
-    display: 'flex',
-    flexDirection: 'column',
-    rowGap: 16,
   },
 });

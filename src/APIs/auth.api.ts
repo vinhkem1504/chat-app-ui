@@ -2,9 +2,8 @@ import {axiosInstanceOptions, createAxiosInstance} from '../axios-instance';
 import {API_URL} from '../config/chat.config';
 
 export interface IAccount {
-  username: string;
   password: string;
-  email?: string;
+  email: string;
 }
 export type TLocation = {
   lat: number;

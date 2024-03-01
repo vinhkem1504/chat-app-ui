@@ -7,7 +7,6 @@ import {Layout} from '../../components/Layout';
 import {useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 export const LoginScreen = () => {
   const schema = Yup.object().shape({
@@ -34,31 +33,9 @@ export const LoginScreen = () => {
   const onEyeChange = (isShow: boolean) => {
     setShowPassword(isShow);
   };
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
-  const handleConfirm = (date: any) => {
-    console.warn('A date has been picked: ', date);
-    hideDatePicker();
-  };
   return (
     <Layout>
-      <View>
-        <Button onPress={showDatePicker}>Show Date Picker</Button>
-        <DateTimePickerModal
-          isVisible={isDatePickerVisible}
-          mode="date"
-          onConfirm={handleConfirm}
-          onCancel={hideDatePicker}
-        />
-      </View>
       <View style={styles.wrapper}>
         <View style={styles.logo}>
           <Text style={styles.title}>Welcome back!</Text>

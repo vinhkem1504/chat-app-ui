@@ -1,9 +1,11 @@
 import React from 'react';
-import {RegiterScreen} from './screens/RegisterScreen';
+import {RegisterScreen} from './screens/RegisterScreen';
 import {LoginScreen} from './screens/LoginScreen';
+import {ForgotPasswordScreen} from './screens/ForgotPasswordScreen';
+import {ChangePasswordScreen} from './screens/ChangePasswordScreen';
 
 function App(): React.JSX.Element {
-  return <LoginScreen />;
+  return <ForgotPasswordScreen />;
 }
 
 export default App;

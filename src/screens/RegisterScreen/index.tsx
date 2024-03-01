@@ -6,28 +6,48 @@ import {useForm} from 'react-hook-form';
 import {Button, TextInput} from 'react-native-paper';
 import * as Yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import dayjs from 'dayjs';
+import {userRegister} from '../../APIs/auth.api';
 
-export const RegiterScreen = () => {
+export const RegisterScreen = () => {
   const [isShownPassword, setShowPassword] = useState<boolean>(false);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const schema = Yup.object().shape({
-    firstname: Yup.string().required(),
-    lastname: Yup.string().required(),
-    username: Yup.string().required(),
+    firstName: Yup.string().required(),
+    lastName: Yup.string().required(),
     email: Yup.string().email().required(),
     password: Yup.string().min(6).required(),
-    confirmPassword: Yup.string().oneOf(
-      [Yup.ref('password')],
-      'Passwords must match',
-    ),
+    birthDay: Yup.date().required(),
+    confirmPassword: Yup.string()
+      .required()
+      .oneOf([Yup.ref('password')], 'Passwords must match'),
+    birthDayShow: Yup.string().required(),
   });
-  const {handleSubmit, control} = useForm({
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+  const {handleSubmit, control, setValue} = useForm({
     resolver: yupResolver(schema),
   });
+  const handleConfirm = (date: any) => {
+    setValue('birthDay', dayjs(date).toDate());
+    setValue('birthDayShow', dayjs(date).format('DD/MM/YYYY'));
+    hideDatePicker();
+  };
   const onEyeChange = (isShow: boolean) => {
     setShowPassword(isShow);
   };
   const onSubmit = (data: any) => {
     console.log({register: data});
+    try {
+      userRegister(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <Layout>
@@ -38,9 +58,25 @@ export const RegiterScreen = () => {
         </View>
         <View style={styles.form}>
           <View style={styles.input}>
-            <Input control={control} name="fisrtname" label="First name" />
-            <Input control={control} name="lastname" label="Last name" />
+            <Input control={control} name="firstName" label="First name" />
+            <Input control={control} name="lastName" label="Last name" />
             <Input control={control} name="email" label="Email" />
+            <Input
+              control={control}
+              name="birthDayShow"
+              placeholder="Birthday"
+              isEditable={false}
+              onPressIn={showDatePicker}
+            />
+            <View style={{display: 'none'}}>
+              <Input control={control} name="birthDay" />
+            </View>
+            <DateTimePickerModal
+              onCancel={hideDatePicker}
+              onConfirm={handleConfirm}
+              mode="date"
+              isVisible={isDatePickerVisible}
+            />
             <Input
               control={control}
               name="password"
@@ -88,11 +124,9 @@ export const RegiterScreen = () => {
               }
             />
           </View>
-          <View>
-            <Button mode="contained">
-              <Text style={styles.button} onPress={handleSubmit(onSubmit)}>
-                Register
-              </Text>
+          <View style={styles.wrapButton}>
+            <Button mode="contained" onPress={handleSubmit(onSubmit)}>
+              <Text style={styles.button}>Register</Text>
             </Button>
           </View>
         </View>
@@ -134,6 +168,9 @@ const styles = StyleSheet.create({
   input: {
     rowGap: 8,
     justifyContent: 'space-between',
+  },
+  wrapButton: {
+    paddingTop: 10,
   },
   button: {
     fontSize: 18,
