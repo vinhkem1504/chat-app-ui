@@ -2,16 +2,18 @@ import React, {useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Input} from '../../components/Input';
 import {Button, Checkbox, Text, TextInput} from 'react-native-paper';
-import {userLogin} from '../../APIs/auth.api';
 import {Layout} from '../../components/Layout';
 import {useForm} from 'react-hook-form';
 import * as Yup from 'yup';
+import {useNavigation} from '@react-navigation/native';
 import {yupResolver} from '@hookform/resolvers/yup';
+import {useAuthStore} from '../../context';
 
 export const LoginScreen = () => {
+  const authStore = useAuthStore();
   const schema = Yup.object().shape({
-    email: Yup.string().email().required(),
-    password: Yup.string().min(6).required(),
+    email: Yup.string().email().required().default('nguyenving1504@gmail.com'),
+    password: Yup.string().min(6).required().default('123456'),
   });
 
   const {handleSubmit, control} = useForm({
@@ -19,12 +21,10 @@ export const LoginScreen = () => {
   });
   const [checked, setChecked] = useState<boolean>(false);
   const [isShownPassword, setShowPassword] = useState<boolean>(false);
-
+  const navigation = useNavigation<any>();
   const onSubmit = (data: any) => {
-    console.log({data});
-
     try {
-      userLogin(data);
+      authStore.login(data);
     } catch (error) {
       console.log(error);
     }
@@ -78,16 +78,22 @@ export const LoginScreen = () => {
             <Text>Save infomation</Text>
           </TouchableOpacity>
           <View style={styles.forgotPassword}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('ForgotPassword');
+              }}>
               <Text style={styles.textForgotPassword}>Forgot password?</Text>
             </TouchableOpacity>
           </View>
         </View>
         <View style={styles.action}>
-          <View></View>
+          <View />
           <View style={styles.register}>
             <Text style={{fontSize: 16}}>Don't have an account? </Text>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('Register');
+              }}>
               <Text style={styles.textRegister}>Register</Text>
             </TouchableOpacity>
           </View>
@@ -139,7 +145,7 @@ const styles = StyleSheet.create({
   },
   register: {
     alignItems: 'center',
-    paddingVertical: 16,
+    paddingVertical: 32,
     flexDirection: 'row',
     justifyContent: 'center',
   },

@@ -9,8 +9,10 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import dayjs from 'dayjs';
 import {userRegister} from '../../APIs/auth.api';
+import {useNavigation} from '@react-navigation/native';
 
 export const RegisterScreen = () => {
+  const navigation = useNavigation<any>();
   const [isShownPassword, setShowPassword] = useState<boolean>(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const schema = Yup.object().shape({
@@ -18,7 +20,7 @@ export const RegisterScreen = () => {
     lastName: Yup.string().required(),
     email: Yup.string().email().required(),
     password: Yup.string().min(6).required(),
-    birthDay: Yup.date().required(),
+    birthDay: Yup.string().required(),
     confirmPassword: Yup.string()
       .required()
       .oneOf([Yup.ref('password')], 'Passwords must match'),
@@ -34,7 +36,7 @@ export const RegisterScreen = () => {
     resolver: yupResolver(schema),
   });
   const handleConfirm = (date: any) => {
-    setValue('birthDay', dayjs(date).toDate());
+    setValue('birthDay', dayjs(date).toISOString());
     setValue('birthDayShow', dayjs(date).format('DD/MM/YYYY'));
     hideDatePicker();
   };
@@ -42,7 +44,6 @@ export const RegisterScreen = () => {
     setShowPassword(isShow);
   };
   const onSubmit = (data: any) => {
-    console.log({register: data});
     try {
       userRegister(data);
     } catch (error) {
@@ -50,7 +51,7 @@ export const RegisterScreen = () => {
     }
   };
   return (
-    <Layout>
+    <Layout backButton>
       <View style={styles.wrapper}>
         <View style={styles.logo}>
           <Text style={styles.title}>Register !</Text>
@@ -64,9 +65,12 @@ export const RegisterScreen = () => {
             <Input
               control={control}
               name="birthDayShow"
-              placeholder="Birthday"
+              placeholder="Choose your birthday"
               isEditable={false}
               onPressIn={showDatePicker}
+              rightIcon={
+                <TextInput.Icon icon={'calendar'} onPress={showDatePicker} />
+              }
             />
             <View style={{display: 'none'}}>
               <Input control={control} name="birthDay" />
@@ -132,7 +136,10 @@ export const RegisterScreen = () => {
         </View>
         <View style={styles.login}>
           <Text>Already have an account? </Text>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('Login');
+            }}>
             <Text style={styles.textLogin}>Login</Text>
           </TouchableOpacity>
         </View>
@@ -147,7 +154,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   logo: {
-    flex: 2,
+    flex: 1.5,
     justifyContent: 'center',
     alignItems: 'center',
     rowGap: 6,

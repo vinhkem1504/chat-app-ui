@@ -11,7 +11,7 @@ export const ChangePasswordScreen = () => {
     console.log({data});
   };
   return (
-    <Layout>
+    <Layout backButton>
       <View style={styles.wrapper}>
         <View style={styles.logo}>
           <Text style={styles.title}>Change password!</Text>

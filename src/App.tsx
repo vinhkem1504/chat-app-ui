@@ -1,11 +1,19 @@
 import React from 'react';
-import {RegisterScreen} from './screens/RegisterScreen';
-import {LoginScreen} from './screens/LoginScreen';
-import {ForgotPasswordScreen} from './screens/ForgotPasswordScreen';
-import {ChangePasswordScreen} from './screens/ChangePasswordScreen';
+import {NavigationContainer} from '@react-navigation/native';
+import {AppContextProvider} from './context';
+import {AppNavigator} from './navigator/AppNavigator';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 function App(): React.JSX.Element {
-  return <ForgotPasswordScreen />;
+  return (
+    <AppContextProvider>
+      <GestureHandlerRootView style={{flex: 1}}>
+        <NavigationContainer>
+          <AppNavigator />
+        </NavigationContainer>
+      </GestureHandlerRootView>
+    </AppContextProvider>
+  );
 }
 
 export default App;

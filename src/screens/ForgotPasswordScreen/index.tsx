@@ -1,17 +1,26 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Layout} from '../../components/Layout';
 import {StyleSheet, View} from 'react-native';
 import {Button, Text} from 'react-native-paper';
 import {Input} from '../../components/Input';
 import {useForm} from 'react-hook-form';
+import {useNavigation} from '@react-navigation/native';
+import * as Yup from 'yup';
+import {yupResolver} from '@hookform/resolvers/yup';
 
 export const ForgotPasswordScreen = () => {
-  const {handleSubmit, control} = useForm();
+  const navigation = useNavigation<any>();
+  const [isContinue, setIsContinue] = useState<boolean>(false);
+  const schema = Yup.object().shape({
+    email: Yup.string().email().required(),
+  });
+  const {handleSubmit, control} = useForm({resolver: yupResolver(schema)});
   const onSubmit = (data: any) => {
     console.log({data});
+    setIsContinue(true);
   };
   return (
-    <Layout>
+    <Layout backButton>
       <View style={styles.wrapper}>
         <View style={styles.logo}>
           <Text style={styles.title}>Forgot password!</Text>
@@ -22,12 +31,16 @@ export const ForgotPasswordScreen = () => {
             <Button mode="contained" onPress={handleSubmit(onSubmit)}>
               <Text style={styles.button}>Get code</Text>
             </Button>
-            <Button
-              mode="contained"
-              onPress={handleSubmit(onSubmit)}
-              buttonColor="#3cb05b">
-              <Text style={styles.button}>Continue</Text>
-            </Button>
+            {isContinue && (
+              <Button
+                mode="contained"
+                onPress={() => {
+                  navigation.navigate('ChangePassword');
+                }}
+                buttonColor="#3cb05b">
+                <Text style={styles.button}>Continue</Text>
+              </Button>
+            )}
           </View>
         </View>
       </View>

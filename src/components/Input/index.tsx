@@ -1,5 +1,6 @@
 import React from 'react';
 import {Controller} from 'react-hook-form';
+import {StyleProp, TextStyle} from 'react-native';
 import {Text, TextInput} from 'react-native-paper';
 
 interface IInput {
@@ -15,6 +16,7 @@ interface IInput {
   register?: any;
   setValue?: any;
   control: any;
+  style?: StyleProp<TextStyle>;
 }
 
 export const Input: React.FC<IInput> = ({
@@ -28,6 +30,7 @@ export const Input: React.FC<IInput> = ({
   isPassword,
   isEditable,
   onPressIn,
+  style,
 }) => {
   return (
     <Controller
@@ -48,6 +51,7 @@ export const Input: React.FC<IInput> = ({
               secureTextEntry={isPassword}
               editable={isEditable}
               onPressIn={onPressIn}
+              style={style}
             />
             {fieldState.error && (
               <Text style={{color: 'red', marginTop: -6}}>

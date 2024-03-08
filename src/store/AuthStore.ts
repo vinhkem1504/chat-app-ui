@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {makeAutoObservable} from 'mobx';
 import {
   IAccount,
   IUser,
@@ -6,11 +7,16 @@ import {
   userRefreshToken,
   userRegister,
 } from '../APIs/auth.api';
+import {IRootStore} from './RootStore';
 
 export class AuthStore {
   accessToken?: string;
   refreshToken?: string;
-  loading?: boolean = true;
+  loading: boolean = true;
+
+  constructor(private readonly rootStore: IRootStore) {
+    makeAutoObservable(this);
+  }
 
   setToken = async (accessToken: string, refreshToken: string) => {
     await AsyncStorage.setItem('accessToken', accessToken);
@@ -33,6 +39,10 @@ export class AuthStore {
         userInfomation.accessToken!,
         userInfomation.refreshToken!,
       );
+      this.accessToken = userInfomation.accessToken;
+      this.refreshToken = userInfomation.refreshToken;
+      this.rootStore.userStore.setUserInfomation(userInfomation.data);
+      this.loading = false;
     } catch (error) {
       console.log(error);
     }
