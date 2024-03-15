@@ -41,3 +41,13 @@ export const useChannelStore = () => {
   const store = useStore();
   return store.channelStore;
 };
+
+export const useLocalStore = () => {
+  const store = useStore();
+  return store.localStore;
+};
+
+export const useAppStore = () => {
+  const store = useStore();
+  return store.appStore;
+};

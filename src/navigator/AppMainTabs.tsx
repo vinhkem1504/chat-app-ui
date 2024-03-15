@@ -1,10 +1,11 @@
+/* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {HomeScreen} from '../screens/HomeScreen';
 import {Icon} from 'react-native-paper';
-import {ContactScreen} from '../screens/ContactScreen';
 import {DiaryScreen} from '../screens/DiaryScreen';
 import {UserInformationScreen} from '../screens/UserInformationScreen';
+import {ContactTabs} from './ContactTabs';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,7 +16,7 @@ export function AppMainTabs() {
         headerShown: false,
       }}>
       <Tab.Screen
-        name="Home"
+        name="ChannelList"
         component={HomeScreen}
         options={{
           tabBarIcon: ({focused}) => (
@@ -32,9 +33,10 @@ export function AppMainTabs() {
           tabBarLabel: 'Message',
         }}
       />
+
       <Tab.Screen
         name="Contact"
-        component={ContactScreen}
+        component={ContactTabs}
         options={{
           tabBarIcon: ({focused}) => (
             <Icon

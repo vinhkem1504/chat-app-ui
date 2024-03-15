@@ -1,7 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Layout} from '../../components/Layout';
-import {HeaderBar} from '../../components/Header';
 import {ChannelList} from 'stream-chat-react-native';
 import {useChannelStore, useUserStore} from '../../context';
 import {ChannelSort} from 'stream-chat';
@@ -9,10 +8,13 @@ import {useChatClient} from '../../utils/hooks/useChatClient';
 import {ActivityIndicator} from 'react-native-paper';
 import {observer} from 'mobx-react-lite';
 import {useNavigation} from '@react-navigation/native';
+import {HeaderBar} from '../../components/Header';
+
 export const HomeScreen = observer(() => {
   const userStore = useUserStore();
   const channelStore = useChannelStore();
   const navigation = useNavigation<any>();
+
   const filterChannelList = {
     members: {
       $in: [userStore.userInfo?._id!],
@@ -26,7 +28,7 @@ export const HomeScreen = observer(() => {
 
   return (
     <Layout>
-      <HeaderBar />
+      <HeaderBar home />
       {!clientIsReady ? (
         <ActivityIndicator
           animating={true}

@@ -65,3 +65,16 @@ export const userRefreshToken = async (refreshToken: string) => {
     console.log(error);
   }
 };
+
+export const loginFromLocal = async () => {
+  try {
+    const options: axiosInstanceOptions = {
+      baseURL: `${API_URL}/auth/check`,
+    };
+    const instance = createAxiosInstance(options);
+    const res = await instance.get('/');
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
