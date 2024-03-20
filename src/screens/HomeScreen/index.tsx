@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Layout} from '../../components/Layout';
 import {ChannelList} from 'stream-chat-react-native';
@@ -9,6 +9,7 @@ import {ActivityIndicator} from 'react-native-paper';
 import {observer} from 'mobx-react-lite';
 import {useNavigation} from '@react-navigation/native';
 import {HeaderBar} from '../../components/Header';
+import {useCalls} from '@stream-io/video-react-native-sdk';
 
 export const HomeScreen = observer(() => {
   const userStore = useUserStore();

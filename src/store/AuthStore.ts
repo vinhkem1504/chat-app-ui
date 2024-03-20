@@ -35,7 +35,7 @@ export class AuthStore {
       console.log({userInfomation});
 
       this.rootStore.userStore.setUserInfomation(userInfomation.data);
-      this.rootStore.appStore.loading = false;
+      this.rootStore.appStore.isAuthencated = false;
     } catch (error) {
       console.log(error);
     }

@@ -39,7 +39,6 @@ export class AppStore {
       user: user,
       token: this.rootStore.localStore.getToken,
     });
-
     this.callClient = createCallClient;
   };
 

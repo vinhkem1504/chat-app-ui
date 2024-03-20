@@ -8,7 +8,11 @@ import {ChatScreen} from '../screens/ChatScreen';
 import {OverlayProvider} from 'stream-chat-react-native';
 import {CallScreen} from '../screens/CallScreen';
 import {Chat} from 'stream-chat-react-native';
-import {StreamVideo} from '@stream-io/video-react-native-sdk';
+import {
+  CallingState,
+  StreamVideo,
+  useCalls,
+} from '@stream-io/video-react-native-sdk';
 import {CallPanel} from '../screens/CallPanel';
 
 const Stack = createNativeStackNavigator();
@@ -19,6 +23,7 @@ const AppStack = observer(() => {
   if (!appStore.callClient || !appStore.chatClient) {
     return null;
   }
+
   return (
     <StreamVideo client={appStore.callClient}>
       <Chat client={appStore.chatClient}>
